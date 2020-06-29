@@ -434,9 +434,9 @@ lErrorExit:
 **      that are associated with the on board VIO ports and to retrieve
 **      various information about each of these supplies.
 **
-**      The "-chanid <0...7,a...f,A...F>" parameter can be used to specify
-**      the channel ID of a specific power supply. If no channel ID is
-**      provided then  this function will retrieve and display information
+**      The "chanid <0...7>" parameter can be used to specify
+**      the channel ID of a specific power supply. If chanid = -1 this function 
+**		will retrieve and display information
 **      for every channel supported by the board.
 */
 BOOL
@@ -487,9 +487,9 @@ dpmutilFGetInfoPower(int chanid, dpmutilPowerInfo_t pPowerInfo[]) {
 **      ports that are associated with each supply. All of this information
 **      is output to the console.
 **
-**      The "-chanid <0...7,a...f,A...F>" parameter can be used to specify
-**      the channel ID of a specific power supply. If no channel ID is
-**      provided then  this function will retrieve and display information
+**      The "chanid <0...7>" parameter can be used to specify
+**      the channel ID of a specific power supply. If chanid = -1 this function
+**		will retrieve and display information
 **      for every channel supported by the board.
 */
 BOOL
@@ -609,9 +609,9 @@ lErrorExit:
 **      ports that are associated with each supply. All of this information
 **      is output to the console.
 **
-**      The "-chanid <0...7,a...f,A...F>" parameter can be used to specify
-**      the channel ID of a specific power supply. If no channel ID is
-**      provided then  this function will retrieve and display information
+**      The "chanid <0...7>" parameter can be used to specify
+**      the channel ID of a specific power supply. If chanid = -1 this function
+**		will retrieve and display information
 **      for every channel supported by the board.
 */
 BOOL
@@ -730,9 +730,9 @@ lErrorExit:
 **      status and configuration information associated with each supply.
 **      All of this information is output to the console.
 **
-**      The "-chanid <0...7,a...f,A...F>" parameter can be used to specify
-**      the channel ID of a specific power supply. If no channel ID is
-**      provided then  this function will retrieve and display information
+**      The "chanid <0...7>" parameter can be used to specify
+**      the channel ID of a specific power supply. If chanid = -1 this function
+**		will retrieve and display information
 **      for every channel supported by the board.
 */
 BOOL
@@ -1141,25 +1141,25 @@ lErrorExit:
 **      made to the Platform Configuration Register will not take effect
 **      until the next time the PMCU is reset.
 **
-**      The "-enforce5v0 <y,n>" parameter can be used to enable or disable
+**      The "enforce5v0 <fTrue,fFalse>" parameter can be used to enable or disable
 **      enforcement of 5V0 current limits. If enforcement is enabled and
 **      the sum of the current requested by all associated SmartVIO pods
 **      exceeds the total current that the supply can provide then the
 **      VIO supply associated with the SmartVIO port will not be enabled.
 **
-**      The "-enforce3v3 <y,n>" parameter can be used to enable or disable
+**      The "enforce3v3 <fTrue,fFalse>" parameter can be used to enable or disable
 **      enforcement of 3V3 current limits. If enforcement is enabled and
 **      the sum of the current requested by all associated SmartVIO pods
 **      exceeds the total current that the supply can provide then the
 **      VIO supply associated with the SmartVIO port will not be enabled.
 **
-**      The "-enforcevio <y,n>" parameter can be used to enable or disable
+**      The "enforcevio <fTrue,fFalse>" parameter can be used to enable or disable
 **      enforcement of VIO current limits. If enforcement is enabled and
 **      the sum of the current requested by all associated SmartVIO pods
 **      exceeds the total current that the supply can provide then the
 **      VIO supply associated with the SmartVIO port will not be enabled.
 **
-**      The "-checkcrc <y,n>" parameter can be used to enable or disable
+**      The "checkcrc <fTrue,fFalse>" parameter can be used to enable or disable
 **      SYZYGY header DNA checks. If CRC checks are enabled and the CRC
 **      computed does not match then the VIO supply associated with the
 **      SmartVIO port will not be enabled.
@@ -1327,19 +1327,19 @@ lErrorExit:
 **      restricted in order to meet the requirements of all associated
 **      SmartVIO ports.
 **
-**      The -chanid <0...7,a...f,A...F> parameter must be used to specify
+**      The "chanid <0...7>" parameter must be used to specify
 **      the channel ID of the VIO supply.
 **
-**      The "-override <y,n>" parameter can be used to enable or disable
+**      The "override <fTrue,fFalse>" parameter can be used to enable or disable
 **      overriding the VADJ supply configuration. If override is enabled
 **      then the associated VIO supply will be configured based on the
 **      enable and voltage fields of the VADJ_n_OVERRIDE register.
 **
-**      The "-enable <y,n>" parameter can be used to enable or disable the
+**      The "enable <fTrue,fFalse>" parameter can be used to enable or disable the
 **      associated VIO supply. This setting has no impact when the override
 **      field of the VADJ_n_OVERRIDE register is cleared.
 **
-**      The "-voltage <millivolts>" parameter can be used to specify the
+**      The "voltage <millivolts>" parameter can be used to specify the
 **      voltage of the associated VIO supply. This setting has no impact
 **      when the override field of the VADJ_n_OVERRIDE register is cleared.
 */
@@ -1562,20 +1562,26 @@ lErrorExit:
 **      Additionally, the FAN configuration is written to EEPROM and will
 **      restored each time the PMCU is reset or power cycled.
 **
-**      The "-fanid <1...4>" parameter must be used to specify ID of the
+**      The "fanid <0...3>" parameter must be used to specify ID of the
 **      fan configuration to be modified.
 **
-**      The "-enable <y,n>" parameter can be used to enable or disable the
+**      The "enable <fTrue,fFalse>" parameter can be used to enable or disable the
 **      associated fan.
 **
-**      The "-speed <minimum,medium,maximum,auto>" parameter can be used to
-**      specify the speed of the associated fan. Please note that not all
-**      fans support this functionality and some ports that do support
-**      this functionality may not support automatic fan speed control.
+**      The "speed <0...3>" parameter can be used to specify the speed of
+**      the associated fan. Please note that not all fans support this
+**      functionality and some ports that do support this functionality
+**      may not support automatic fan speed control.
+**      0 - minimum
+**      1 - medium
+**      2 - maximum
+**      3 - auto
 **
-**      The "-probe <none,p1,p2,p3,p4>" parameter can be used to specify the
+**      The "-probe <0...4>" parameter can be used to specify the
 **      temperature probe associated with a fan if that fan supports automatic
 **      speed control.
+**      0 - none
+**      1...4 - probe[1...4]
 */
 BOOL
 dpmutilFSetFanConfig(int fanid, BOOL setEnable, BOOL enable, BOOL setSpeed, BYTE speed, BOOL setProbe, BYTE probe) {
@@ -1590,13 +1596,6 @@ dpmutilFSetFanConfig(int fanid, BOOL setEnable, BOOL enable, BOOL setSpeed, BYTE
 #endif
 
 	fdI2c = -1;
-
-	/* Make sure the user specified the channel ID.
-	*/
-	if ( ! fanid ) {
-		printf("ERROR: you must specify a fan identifier using the \"-fanid\" option\n");
-		goto lErrorExit;
-	}
 
 	/* Make sure the user passed in a parameter specifying the value to
 	** set for one or more fields of the FAN_n_CONFIGURATION register.
