@@ -171,6 +171,49 @@ FDisplayZmodADCCal(int fdI2cDev, BYTE addrI2cSlave) {
 }
 
 /* ------------------------------------------------------------ */
+/***    FGetZmodADCCal
+**
+**  Parameters:
+**  	fdI2cDev        - open file descriptor for underlying I2C device (linux only)
+**      addrI2cSlave    - I2C bus address for the slave
+**      pFactoryCal			- ZMOD_ADC_CAL object to return factory calibration data through
+**      pUserCal			- ZMOD_ADC_CAL object to return user calibration data through
+**
+**  Return Value:
+**      fTrue for success, fFalse otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function reads the factory calibration and user calibration
+**      areas from the ZmodADC with the specified I2C bus address,
+**      then returns the calibration data by argument.
+*/
+BOOL
+FGetZmodADCCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_ADC_CAL *pFactoryCal, ZMOD_ADC_CAL *pUserCal) {
+
+    WORD            cbRead;
+    time_t          t;
+    struct tm       time;
+    char            szDate[256];
+
+    if ( ! SyzygyI2cRead(fdI2cDev, addrI2cSlave, addrAdcFactCalStart, (BYTE*)pFactoryCal, sizeof(ZMOD_ADC_CAL), &cbRead) ) {
+        printf("Error: failed to read ZmodADC factory calibration from 0x%02X\n", addrI2cSlave);
+        printf("Error: received %d of %d bytes\n", cbRead, sizeof(ZMOD_ADC_CAL));
+        return fFalse;
+    }
+
+    if ( ! SyzygyI2cRead(fdI2cDev, addrI2cSlave, addrAdcUserCalStart, (BYTE*)pUserCal, sizeof(ZMOD_ADC_CAL), &cbRead) ) {
+        printf("Error: failed to read ZmodADC user calibration from 0x%02X\n", addrI2cSlave);
+        printf("Error: received %d of %d bytes\n", cbRead, sizeof(ZMOD_ADC_CAL));
+        return fFalse;
+    }
+
+    return fTrue;
+}
+
+/* ------------------------------------------------------------ */
 /***    ComputeMultCoefADC1410
 **
 **  Parameters:

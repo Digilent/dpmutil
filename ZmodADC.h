@@ -62,6 +62,7 @@ typedef struct {
 /* ------------------------------------------------------------ */
 
 BOOL    FDisplayZmodADCCal(int fdI2cDev, BYTE addrI2cSlave);
+BOOL    FGetZmodADCCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_ADC_CAL* pFactoryCal, ZMOD_ADC_CAL* pUserCal);
 
 /* ------------------------------------------------------------ */
 
