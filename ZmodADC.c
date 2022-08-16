@@ -194,9 +194,6 @@ BOOL
 FGetZmodADCCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_ADC_CAL *pFactoryCal, ZMOD_ADC_CAL *pUserCal) {
 
     WORD            cbRead;
-    time_t          t;
-    struct tm       time;
-    char            szDate[256];
 
     if ( ! SyzygyI2cRead(fdI2cDev, addrI2cSlave, addrAdcFactCalStart, (BYTE*)pFactoryCal, sizeof(ZMOD_ADC_CAL), &cbRead) ) {
         printf("Error: failed to read ZmodADC factory calibration from 0x%02X\n", addrI2cSlave);

@@ -197,9 +197,6 @@ BOOL
 FGetZmodDACCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_DAC_CAL *pFactoryCal, ZMOD_DAC_CAL *pUserCal) {
 
     WORD            cbRead;
-    time_t          t;
-    struct tm       time;
-    char            szDate[256];
 
     if ( ! SyzygyI2cRead(fdI2cDev, addrI2cSlave, addrDacFactCalStart, (BYTE*)pFactoryCal, sizeof(ZMOD_DAC_CAL), &cbRead) ) {
         printf("Error: failed to read ZmodDAC factory calibration from 0x%02X\n", addrI2cSlave);
