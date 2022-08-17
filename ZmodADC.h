@@ -53,6 +53,11 @@ typedef struct {
 
 #pragma pack(pop)
 
+typedef struct {
+	// individual fields are signed 18-bit values with 0s filling the uppermost 14 bits, in the format used by PL calibration hardware
+	unsigned int cal[2][2][2]; // [channel 0:1][low/high gain 0:1][0 multiplicative : 1 additive]
+} ZMOD_ADC_CAL_S18;
+
 /* ------------------------------------------------------------ */
 /*                  Variable Declarations                       */
 /* ------------------------------------------------------------ */
@@ -63,6 +68,7 @@ typedef struct {
 
 BOOL    FDisplayZmodADCCal(int fdI2cDev, BYTE addrI2cSlave);
 BOOL    FGetZmodADCCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_ADC_CAL* pFactoryCal, ZMOD_ADC_CAL* pUserCal);
+void    FZmodADCCalConvertToS18(ZMOD_ADC_CAL adcal, ZMOD_ADC_CAL_S18 *pReturn);
 
 /* ------------------------------------------------------------ */
 
