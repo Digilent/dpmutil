@@ -214,6 +214,34 @@ FGetZmodDACCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_DAC_CAL *pFactoryCal, ZMOD_
 }
 
 /* ------------------------------------------------------------ */
+/***    FZmodDACCalConvertToS18
+**
+**  Parameters:
+**      dacal			- ZMOD_DAC_CAL object to pull calibration coefficients from
+**      pReturn			- ZMOD_DAC_CAL_S18 object to return data by argument
+**
+**  Return Value:
+**      none
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function converts calibration coefficients to the 18-bit signed format used in PL hardware.
+*/
+void
+FZmodDACCalConvertToS18(ZMOD_DAC_CAL dacal, ZMOD_DAC_CAL_S18 *pReturn) {
+	pReturn->cal[0][0][0] = (unsigned int)ComputeMultCoefDAC1411(dacal.cal[0][0][0], fFalse);
+	pReturn->cal[0][0][1] = (unsigned int)ComputeAddCoefDAC1411(dacal.cal[0][0][1], dacal.cal[0][0][0], fFalse);
+	pReturn->cal[0][1][0] = (unsigned int)ComputeMultCoefDAC1411(dacal.cal[0][1][0], fTrue);
+	pReturn->cal[0][1][1] = (unsigned int)ComputeAddCoefDAC1411(dacal.cal[0][1][1], dacal.cal[0][1][0], fTrue);
+	pReturn->cal[1][0][0] = (unsigned int)ComputeMultCoefDAC1411(dacal.cal[1][0][0], fFalse);
+	pReturn->cal[1][0][1] = (unsigned int)ComputeAddCoefDAC1411(dacal.cal[1][0][1], dacal.cal[1][0][0], fFalse);
+	pReturn->cal[1][1][0] = (unsigned int)ComputeMultCoefDAC1411(dacal.cal[1][1][0], fTrue);
+	pReturn->cal[1][1][1] = (unsigned int)ComputeAddCoefDAC1411(dacal.cal[1][1][1], dacal.cal[1][1][0], fTrue);
+}
+
+/* ------------------------------------------------------------ */
 /***    ComputeMultCoefDAC1411
 **
 **  Parameters:
