@@ -52,6 +52,7 @@
 #include "../dpmutil/syzygy.h"
 #include "../dpmutil/ZmodADC.h"
 #include "../dpmutil/ZmodDAC.h"
+#include "../dpmutil/ZmodDigitizer.h"
 
 /* ------------------------------------------------------------ */
 /*                  Miscellaneous Declarations                  */
