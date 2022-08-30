@@ -18,7 +18,7 @@
 /************************************************************************/
 /*  Revision History:                                                   */
 /*                                                                      */
-/*  08/30/2022 (ArtVVB): created, ported from ZmodDigitizer.c                 */
+/*  08/30/2022 (ArtVVB): created, ported from ZmodDigitizer.c           */
 /*                                                                      */
 /************************************************************************/
 
@@ -78,7 +78,7 @@ int32_t ComputeAddCoefDigitizer(float ca);
 /***    FDisplayZmodDigitizerCal
 **
 **  Parameters:
-**  	fdI2cDev        - open file descriptor for underlying I2C device (linux only)
+**      fdI2cDev        - open file descriptor for underlying I2C device (linux only)
 **      addrI2cSlave    - I2C bus address for the slave
 **
 **  Return Value:
@@ -116,19 +116,19 @@ FDisplayZmodDigitizerCal(int fdI2cDev, BYTE addrI2cSlave) {
     }
 
     for (hz = 0; hz < cbDigitizerCalibHzSteps; hz++) {
-    	float freq = FZmodDigitizerGetFrequencyStepMHz(adcal.hz[hz]);
-		printf("    Channel 1 Gain   at %.02f MHz: %f\n", freq, adcal.cal[hz][0][0]);
-		printf("    Channel 1 Offset at %.02f MHz: %f\n", freq, adcal.cal[hz][0][1]);
-		printf("    Channel 2 Gain   at %.02f MHz: %f\n", freq, adcal.cal[hz][1][0]);
-		printf("    Channel 2 Offset at %.02f MHz: %f\n", freq, adcal.cal[hz][1][1]);
+        float freq = FZmodDigitizerGetFrequencyStepMHz(adcal.hz[hz]);
+        printf("    Channel 1 Gain   at %.02f MHz: %f\n", freq, adcal.cal[hz][0][0]);
+        printf("    Channel 1 Offset at %.02f MHz: %f\n", freq, adcal.cal[hz][0][1]);
+        printf("    Channel 2 Gain   at %.02f MHz: %f\n", freq, adcal.cal[hz][1][0]);
+        printf("    Channel 2 Offset at %.02f MHz: %f\n", freq, adcal.cal[hz][1][1]);
     }
 
     for (hz = 0; hz < cbDigitizerCalibHzSteps; hz++) {
-    	float freq = FZmodDigitizerGetFrequencyStepMHz(adcal.hz[hz]);
-		printf("    Channel 1 Gain   at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][0][0]));
-		printf("    Channel 1 Offset at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][0][1]));
-		printf("    Channel 2 Gain   at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][1][0]));
-		printf("    Channel 2 Offset at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][1][1]));
+        float freq = FZmodDigitizerGetFrequencyStepMHz(adcal.hz[hz]);
+        printf("    Channel 1 Gain   at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][0][0]));
+        printf("    Channel 1 Offset at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][0][1]));
+        printf("    Channel 2 Gain   at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][1][0]));
+        printf("    Channel 2 Offset at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][1][1]));
     }
 
     if ( ! SyzygyI2cRead(fdI2cDev, addrI2cSlave, addrDigitizerUserCalStart, (BYTE*)&adcal, sizeof(ZMOD_DIGITIZER_CAL), &cbRead) ) {
@@ -144,19 +144,19 @@ FDisplayZmodDigitizerCal(int fdI2cDev, BYTE addrI2cSlave) {
     }
 
     for (hz = 0; hz < cbDigitizerCalibHzSteps; hz++) {
-    	float freq = FZmodDigitizerGetFrequencyStepMHz(adcal.hz[hz]);
-		printf("    Channel 1 Gain   at %.02f MHz: %f\n", freq, adcal.cal[hz][0][0]);
-		printf("    Channel 1 Offset at %.02f MHz: %f\n", freq, adcal.cal[hz][0][1]);
-		printf("    Channel 2 Gain   at %.02f MHz: %f\n", freq, adcal.cal[hz][1][0]);
-		printf("    Channel 2 Offset at %.02f MHz: %f\n", freq, adcal.cal[hz][1][1]);
+        float freq = FZmodDigitizerGetFrequencyStepMHz(adcal.hz[hz]);
+        printf("    Channel 1 Gain   at %.02f MHz: %f\n", freq, adcal.cal[hz][0][0]);
+        printf("    Channel 1 Offset at %.02f MHz: %f\n", freq, adcal.cal[hz][0][1]);
+        printf("    Channel 2 Gain   at %.02f MHz: %f\n", freq, adcal.cal[hz][1][0]);
+        printf("    Channel 2 Offset at %.02f MHz: %f\n", freq, adcal.cal[hz][1][1]);
     }
 
     for (hz = 0; hz < cbDigitizerCalibHzSteps; hz++) {
-    	float freq = FZmodDigitizerGetFrequencyStepMHz(adcal.hz[hz]);
-		printf("    Channel 1 Gain   at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][0][0]));
-		printf("    Channel 1 Offset at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][0][1]));
-		printf("    Channel 2 Gain   at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][1][0]));
-		printf("    Channel 2 Offset at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][1][1]));
+        float freq = FZmodDigitizerGetFrequencyStepMHz(adcal.hz[hz]);
+        printf("    Channel 1 Gain   at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][0][0]));
+        printf("    Channel 1 Offset at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][0][1]));
+        printf("    Channel 2 Gain   at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][1][0]));
+        printf("    Channel 2 Offset at %.02f MHz (static): 0x%05X\n", freq, (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][1][1]));
     }
 
     return fTrue;
@@ -166,10 +166,10 @@ FDisplayZmodDigitizerCal(int fdI2cDev, BYTE addrI2cSlave) {
 /***    FGetZmodDigitizerCal
 **
 **  Parameters:
-**  	fdI2cDev        - open file descriptor for underlying I2C device (linux only)
+**      fdI2cDev        - open file descriptor for underlying I2C device (linux only)
 **      addrI2cSlave    - I2C bus address for the slave
-**      pFactoryCal		- ZMOD_DIGITIZER_CAL object to return factory calibration data through
-**      pUserCal		- ZMOD_DIGITIZER_CAL object to return user calibration data through
+**      pFactoryCal     - ZMOD_DIGITIZER_CAL object to return factory calibration data through
+**      pUserCal        - ZMOD_DIGITIZER_CAL object to return user calibration data through
 **
 **  Return Value:
 **      fTrue for success, fFalse otherwise
@@ -206,8 +206,8 @@ FGetZmodDigitizerCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_DIGITIZER_CAL *pFacto
 /***    FZmodDigitizerCalConvertToS18
 **
 **  Parameters:
-**      adcal			- ZMOD_DIGITIZER_CAL object to pull calibration coefficients from
-**      pReturn			- ZMOD_DIGITIZER_CAL_S18 object to return data by argument
+**      adcal           - ZMOD_DIGITIZER_CAL object to pull calibration coefficients from
+**      pReturn         - ZMOD_DIGITIZER_CAL_S18 object to return data by argument
 **
 **  Return Value:
 **      none
@@ -220,13 +220,13 @@ FGetZmodDigitizerCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_DIGITIZER_CAL *pFacto
 */
 void
 FZmodDigitizerCalConvertToS18(ZMOD_DIGITIZER_CAL adcal, ZMOD_DIGITIZER_CAL_S18 *pReturn) {
-	int hz, ch;
-	for (hz = 0; hz < cbDigitizerCalibHzSteps; hz++) { // frequency step
-		for (ch = 0; ch < 2; ch++) { // channel index
-			pReturn->cal[hz][ch][0] = (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][ch][0]);
-			pReturn->cal[hz][ch][1] = (unsigned int)ComputeAddCoefDigitizer(adcal.cal[hz][ch][1]);
-		}
-	}
+    int hz, ch;
+    for (hz = 0; hz < cbDigitizerCalibHzSteps; hz++) { // frequency step
+        for (ch = 0; ch < 2; ch++) { // channel index
+            pReturn->cal[hz][ch][0] = (unsigned int)ComputeMultCoefDigitizer(adcal.cal[hz][ch][0]);
+            pReturn->cal[hz][ch][1] = (unsigned int)ComputeAddCoefDigitizer(adcal.cal[hz][ch][1]);
+        }
+    }
 }
 
 /* ------------------------------------------------------------ */
@@ -308,14 +308,14 @@ ComputeAddCoefDigitizer(float ca) {
 */
 float
 FZmodDigitizerGetFrequencyStepMHz(BYTE hz) {
-	switch (hz) {
-	case 0:   return 122.88f;
-	case 50:  return 50.0f;
-	case 80:  return 80.0f;
-	case 100: return 100.0f;
-	case 110: return 110.0f;
-	case 120: return 120.0f;
-	case 125: return 125.0f;
-	default:  return 0.0f;
-	}
+    switch (hz) {
+    case 0:   return 122.88f;
+    case 50:  return 50.0f;
+    case 80:  return 80.0f;
+    case 100: return 100.0f;
+    case 110: return 110.0f;
+    case 120: return 120.0f;
+    case 125: return 125.0f;
+    default:  return 0.0f;
+    }
 }
