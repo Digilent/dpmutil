@@ -10,7 +10,7 @@
 /*                                                                      */
 /*  This header file contains the declarations for functions that can   */
 /*  be used to calculate and display the calibration constants          */
-/*	associated with a Zmod Digitizer.                                   */
+/*  associated with a Zmod Digitizer.                                   */
 /*                                                                      */
 /************************************************************************/
 /*  Revision History:                                                   */
@@ -36,22 +36,23 @@
 
 #define cbDigitizerCalMax         128
 
+// The number of frequencies that the digitizer was calibrated at, for which coefficients are stored in DNA
+#define cbDigitizerCalibHzSteps   7
+
 /* ------------------------------------------------------------ */
 /*                  General Type Declarations                   */
 /* ------------------------------------------------------------ */
 
-#define cbDigitizerCalibHzSteps   7
-
 #pragma pack(push, 1)
 
-typedef struct ZMOD_DIGITIZER_CAL {    // 128 B
-    BYTE     id;             // 0xDD
-    int32_t  date;           // unix time, secs since epoch
-    BYTE     hz[cbDigitizerCalibHzSteps];          // 7 steps: 0=122.88MHz, 50(MHz), 80(MHz), 100(MHz), 110(MHz), 120(MHz), 125(MHz)
-    BYTE     nop[3];         // reserved
-    float    cal[cbDigitizerCalibHzSteps][2][2];   // 7x16B, [hz step][channel][0 multiplicative : 1 additive]
-    			             //gain(1.0=100% normally around ~5%), add(Volts normally ~10mV)
-    BYTE     crc;            // to generate: init 0 and -=byte; the checksum of the structure should be 0
+typedef struct ZMOD_DIGITIZER_CAL {    			  // 128 B
+    BYTE     id;             					  // 0xDD
+    int32_t  date;           					  // unix time, secs since epoch
+    BYTE     hz[cbDigitizerCalibHzSteps];         // 7 steps: 0=122.88MHz, 50(MHz), 80(MHz), 100(MHz), 110(MHz), 120(MHz), 125(MHz)
+    BYTE     nop[3];         					  // reserved
+    float    cal[cbDigitizerCalibHzSteps][2][2];  // 7x16B, [hz step][channel][0 multiplicative : 1 additive]
+    											  //gain(1.0=100% normally around ~5%), add(Volts normally ~10mV)
+    BYTE     crc;            					  // to generate: init 0 and -=byte; the checksum of the structure should be 0
 } ZMOD_DIGITIZER_CAL;
 
 #pragma pack(pop)
