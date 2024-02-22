@@ -23,6 +23,7 @@
 /*      displayed based on feedback                                     */
 /*  01/15/2020 (MichaelA): modified FDisplayZmodADCCal to display the   */
 /*      raw calibration constants as retrieved from flash               */
+/*  02/21/2024 (ArtVVB): added identification functions                 */
 /*                                                                      */
 /************************************************************************/
 
@@ -302,3 +303,105 @@ ComputeAddCoefADC1410(float ca, BOOL fHighGain) {
     return ival;
 }
 
+/* ------------------------------------------------------------ */
+/***    FZmodIsADC
+**
+**  Parameters:
+**      Pdid            - Product ID read from DNA
+**
+**  Return Value:
+**      Bool, true if the PDID represents a valid Zmod ADC ID, false
+**      otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function determines whether a given Zmod is a Zmod ADC
+*/
+BOOL
+FZmodIsADC(DWORD Pdid) {
+	return ((Pdid >> 20) & 0xfff) == prodZmodADC;
+}
+
+/* ------------------------------------------------------------ */
+/***    FGetZmodADCVariant
+**
+**  Parameters:
+**      Pdid            - Product ID read from DNA
+**      pVariant		- ZMOD_ADC_VARIANT enum to return by argument
+**
+**  Return Value:
+**      Vool, false if unsupported variant, true otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function processes the product ID to determine what variant of the Zmod ADC the installed Zmod is
+*/
+BOOL
+FGetZmodADCVariant(DWORD Pdid, ZMOD_ADC_VARIANT *pVariant) {
+	switch ((Pdid >> 8) & 0xfff) {
+	case 0x002:
+		*pVariant = ZMOD_ADC_VARIANT_1410_105;
+		return fTrue;
+	case 0x012:
+		*pVariant = ZMOD_ADC_VARIANT_1010_40;
+		return fTrue;
+	case 0x022:
+		*pVariant = ZMOD_ADC_VARIANT_1210_40;
+		return fTrue;
+	case 0x032:
+		*pVariant = ZMOD_ADC_VARIANT_1410_40;
+		return fTrue;
+	case 0x042:
+		*pVariant = ZMOD_ADC_VARIANT_1010_125;
+		return fTrue;
+	case 0x052:
+		*pVariant = ZMOD_ADC_VARIANT_1210_125;
+		return fTrue;
+	case 0x062:
+		*pVariant = ZMOD_ADC_VARIANT_1410_125;
+		return fTrue;
+	default:
+		*pVariant = ZMOD_ADC_VARIANT_UNSUPPORTED;
+		return fFalse;
+	}
+}
+
+/* ------------------------------------------------------------ */
+/***    FGetZmodADCResolution
+**
+**  Parameters:
+**      variant			- Enum identifying the Zmod ADC variant, result of FGetZmodADCVariant
+**      pResolution		- Pointer to return the ADC resolution by argument
+**
+**  Return Value:
+**      Bool, false if the variant is unsupported, true otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function uses the Zmod ADC variant to determine the ADC resolution
+*/
+BOOL FGetZmodADCResolution(ZMOD_ADC_VARIANT variant, DWORD *pResolution) {
+	switch (variant) {
+	case ZMOD_ADC_VARIANT_1410_105:
+	case ZMOD_ADC_VARIANT_1410_40:
+	case ZMOD_ADC_VARIANT_1410_125:
+		*pResolution = 14;
+		return fTrue;
+	case ZMOD_ADC_VARIANT_1210_40:
+	case ZMOD_ADC_VARIANT_1210_125:
+		*pResolution = 12;
+		return fTrue;
+	case ZMOD_ADC_VARIANT_1010_40:
+	case ZMOD_ADC_VARIANT_1010_125:
+		*pResolution = 10;
+		return fTrue;
+	case ZMOD_ADC_VARIANT_UNSUPPORTED:
+		return fFalse;
+	}
+}

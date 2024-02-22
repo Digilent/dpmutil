@@ -16,6 +16,7 @@
 /*  Revision History:                                                   */
 /*                                                                      */
 /*  01/13/2020 (MichaelA): created                                      */
+/*  02/21/2024 (ArtVVB): added identification functions                 */
 /*                                                                      */
 /************************************************************************/
 
@@ -58,6 +59,11 @@ typedef struct {
 	unsigned int cal[2][2][2]; // [channel 0:1][low/high gain 0:1][0 multiplicative : 1 additive]
 } ZMOD_DAC_CAL_S18;
 
+typedef enum {
+	ZMOD_DAC_VARIANT_1411_125=0,
+	ZMOD_DAC_VARIANT_UNSUPPORTED
+} ZMOD_DAC_VARIANT;
+
 /* ------------------------------------------------------------ */
 /*                  Variable Declarations                       */
 /* ------------------------------------------------------------ */
@@ -69,6 +75,9 @@ typedef struct {
 BOOL    FDisplayZmodDACCal(int fdI2cDev, BYTE addrI2cSLave);
 BOOL    FGetZmodDACCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_DAC_CAL* pFactoryCal, ZMOD_DAC_CAL* pUserCal);
 void    FZmodDACCalConvertToS18(ZMOD_DAC_CAL adcal, ZMOD_DAC_CAL_S18 *pReturn);
+BOOL 	FZmodIsDAC(DWORD Pdid);
+BOOL	FGetZmodDACVariant(DWORD Pdid, ZMOD_DAC_VARIANT *pVariant);
+BOOL 	FGetZmodDACResolution(ZMOD_DAC_VARIANT variant, DWORD *pResolution);
 
 /* ------------------------------------------------------------ */
 

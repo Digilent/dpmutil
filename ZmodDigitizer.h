@@ -16,6 +16,7 @@
 /*  Revision History:                                                   */
 /*                                                                      */
 /*  08/30/2022 (ArtVVB): created, adapted from ZmodADC.h                */
+/*  02/21/2024 (ArtVVB): added identification functions                 */
 /*                                                                      */
 /************************************************************************/
 
@@ -26,7 +27,7 @@
 /*                  Miscellaneous Declarations                  */
 /* ------------------------------------------------------------ */
 
-#define prodZmodDigitizer 0x801
+#define prodZmodDigitizer 0x804
 
 /* Define the SYZYGY addresses used for accessing the factory
 ** and user calibration areas over the SYZYGY I2C bus.
@@ -62,6 +63,11 @@ typedef struct {
 	unsigned int cal[cbDigitizerCalibHzSteps][2][2]; // [hz step][channel 0:1][0 multiplicative : 1 additive]
 } ZMOD_DIGITIZER_CAL_S18;
 
+typedef enum {
+	ZMOD_DIGITIZER_VARIANT_1430_125=0,
+	ZMOD_DIGITIZER_VARIANT_UNSUPPORTED
+} ZMOD_DIGITIZER_VARIANT;
+
 /* ------------------------------------------------------------ */
 /*                  Variable Declarations                       */
 /* ------------------------------------------------------------ */
@@ -74,6 +80,9 @@ BOOL    FDisplayZmodDigitizerCal(int fdI2cDev, BYTE addrI2cSlave);
 BOOL    FGetZmodDigitizerCal(int fdI2cDev, BYTE addrI2cSlave, ZMOD_DIGITIZER_CAL* pFactoryCal, ZMOD_DIGITIZER_CAL* pUserCal);
 void    FZmodDigitizerCalConvertToS18(ZMOD_DIGITIZER_CAL adcal, ZMOD_DIGITIZER_CAL_S18 *pReturn);
 float   FZmodDigitizerGetFrequencyStepMHz(BYTE hz);
+BOOL 	FZmodIsDigitizer(DWORD Pdid);
+BOOL	FGetZmodDigitizerVariant(DWORD Pdid, ZMOD_DIGITIZER_VARIANT *pVariant);
+BOOL 	FGetZmodDigitizerResolution(ZMOD_DIGITIZER_VARIANT variant, DWORD *pResolution);
 
 /* ------------------------------------------------------------ */
 
