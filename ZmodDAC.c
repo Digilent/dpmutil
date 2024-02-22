@@ -26,6 +26,7 @@
 /*      with the ADC1410 conversion functions                           */
 /*  01/15/2020 (MichaelA): modified FDisplayZmodDACCal to display the   */
 /*      raw calibration constants as retrieved from flash               */
+/*  02/21/2024 (ArtVVB): added identification functions                 */
 /*                                                                      */
 /************************************************************************/
 
@@ -306,3 +307,76 @@ ComputeAddCoefDAC1411(float ca, float cg, BOOL fHighGain) {
     return ival;
 }
 
+/* ------------------------------------------------------------ */
+/***    FZmodIsDAC
+**
+**  Parameters:
+**      Pdid            - Product ID read from DNA
+**
+**  Return Value:
+**      Bool, true if the PDID represents a valid Zmod DAC ID, false
+**      otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function determines whether a given Zmod is a Zmod DAC
+*/
+BOOL 	FZmodIsDAC(DWORD Pdid) {
+	return ((Pdid >> 20) & 0xfff) == prodZmodDAC;
+}
+
+/* ------------------------------------------------------------ */
+/***    FGetZmodDACVariant
+**
+**  Parameters:
+**      Pdid            - Product ID read from DNA
+**      pVariant		- ZMOD_DAC_VARIANT enum to return by argument
+**
+**  Return Value:
+**      Bool, false if unsupported variant, true otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function processes the product ID to determine what variant of the Zmod DAC the installed Zmod is
+*/
+BOOL
+FGetZmodDACVariant(DWORD Pdid, ZMOD_DAC_VARIANT *pVariant) {
+	switch ((Pdid >> 8) & 0xfff) {
+	case 0x003:
+		*pVariant = ZMOD_DAC_VARIANT_1411_125;
+		return fTrue;
+	default:
+		*pVariant = ZMOD_DAC_VARIANT_UNSUPPORTED;
+		return fFalse;
+	}
+}
+
+/* ------------------------------------------------------------ */
+/***    FGetZmodDACResolution
+**
+**  Parameters:
+**      variant			- Enum identifying the Zmod DAC variant, result of FGetZmodDACVariant
+**      pResolution		- Pointer to return the DAC resolution by argument
+**
+**  Return Value:
+**      Bool, false if the variant is unsupported, true otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function uses the Zmod DAC variant to determine the DAC resolution
+*/
+BOOL FGetZmodDACResolution(ZMOD_DAC_VARIANT variant, DWORD *pResolution) {
+	switch (variant) {
+	case ZMOD_DAC_VARIANT_1411_125:
+		*pResolution = 14;
+		return fTrue;
+	default:
+		return fFalse;
+	}
+}

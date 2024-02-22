@@ -19,6 +19,7 @@
 /*  Revision History:                                                   */
 /*                                                                      */
 /*  08/30/2022 (ArtVVB): created, ported from ZmodDigitizer.c           */
+/*  02/21/2024 (ArtVVB): added identification functions                 */
 /*                                                                      */
 /************************************************************************/
 
@@ -318,4 +319,79 @@ FZmodDigitizerGetFrequencyStepMHz(BYTE hz) {
     case 125: return 125.0f;
     default:  return 0.0f;
     }
+}
+
+/* ------------------------------------------------------------ */
+/***    FZmodIsDigitizer
+**
+**  Parameters:
+**      Pdid            - Product ID read from DNA
+**
+**  Return Value:
+**      Bool, true if the PDID represents a valid Zmod Digitizer ID, false
+**      otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function determines whether a given Zmod is a Zmod Digitizer
+*/
+BOOL
+FZmodIsDigitizer(DWORD Pdid) {
+	return ((Pdid >> 20) & 0xfff) == prodZmodDigitizer;
+}
+
+/* ------------------------------------------------------------ */
+/***    FGetZmodDigitizerVariant
+**
+**  Parameters:
+**      Pdid            - Product ID read from DNA
+**      pVariant		- ZMOD_DIGITIZER_VARIANT enum to return by argument
+**
+**  Return Value:
+**      Bool, false if unsupported variant, true otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function processes the product ID to determine what variant of the Zmod Digitizer the installed Zmod is
+*/
+BOOL
+FGetZmodDigitizerVariant(DWORD Pdid, ZMOD_DIGITIZER_VARIANT *pVariant) {
+	switch ((Pdid >> 8) & 0xfff) {
+	case 0x061:
+		*pVariant = ZMOD_DIGITIZER_VARIANT_1430_125;
+		return fTrue;
+	default:
+		*pVariant = ZMOD_DIGITIZER_VARIANT_UNSUPPORTED;
+		return fFalse;
+	}
+}
+
+/* ------------------------------------------------------------ */
+/***    FGetZmodDigitizerResolution
+**
+**  Parameters:
+**      variant			- Enum identifying the Zmod Digitizer variant, result of FGetZmodDACVariant
+**      pResolution		- Pointer to return the ADC resolution by argument
+**
+**  Return Value:
+**      Bool, false if the variant is unsupported, true otherwise
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function uses the Zmod Digitizer variant to determine the ADC resolution
+*/
+BOOL FGetZmodDigitizerResolution(ZMOD_DIGITIZER_VARIANT variant, DWORD *pResolution) {
+	switch (variant) {
+	case ZMOD_DIGITIZER_VARIANT_1430_125:
+		*pResolution = 14;
+		return fTrue;
+	default:
+		return fFalse;
+	}
 }
