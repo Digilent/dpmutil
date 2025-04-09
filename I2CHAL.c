@@ -501,3 +501,32 @@ lErrorExit:
 
 	return fFalse;
 }
+
+#ifdef XPS_BOARD_GZU_3EG
+/* ------------------------------------------------------------ */
+/***    PmcuI2cWrite
+**
+**  Parameters:
+**      deviceID		- deviceID of the I2C device to use
+**      slaveAddr       - I2C slave address of the target
+**      rgbSnd        	- byte buffer to send
+**      cbTrans         - number of bytes to send
+**
+**  Return Value:
+**      Number of bytes sent.
+**
+**  Errors:
+**      none
+**
+**  Description:
+**      This function writes the specified number of bytes to the specified
+**      slave on the I2C bus. Low level polled send that blocks until complete.
+*/
+WORD I2CHALLowLevelSend(int deviceId, BYTE slaveAddr, BYTE* rgbSnd, WORD cbTrans) {
+	if (!I2CHALInit(deviceId)) {
+		return 0;
+	}
+
+	return XIic_Send(IicDev.BaseAddress, slaveAddr, rgbSnd, cbTrans, XIIC_STOP);
+}
+#endif
