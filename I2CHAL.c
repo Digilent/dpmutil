@@ -502,7 +502,7 @@ lErrorExit:
 	return fFalse;
 }
 
-#ifdef XPS_BOARD_GZU_3EG
+#if defined(XPS_BOARD_GZU_3EG) || defined(XPS_BOARD_GZU_5EV)
 /* ------------------------------------------------------------ */
 /***    PmcuI2cWrite
 **
@@ -526,7 +526,8 @@ WORD I2CHALLowLevelSend(int deviceId, BYTE slaveAddr, BYTE* rgbSnd, WORD cbTrans
 	if (!I2CHALInit(deviceId)) {
 		return 0;
 	}
-
+//	return XIic_MasterSend(&IicDev, rgbSnd, cbTrans); // requires interrupt to reissue the send
+//	int XIic_MasterSend(XIic *InstancePtr, u8 *TxMsgPtr, int ByteCount)
 	return XIic_Send(IicDev.BaseAddress, slaveAddr, rgbSnd, cbTrans, XIIC_STOP);
 }
 #endif

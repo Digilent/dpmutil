@@ -62,7 +62,7 @@ BOOL I2CHALInit(UINT32 deviceID);
 #endif
 BOOL I2CHALRead(int fdI2cDev, BYTE slaveAddr, WORD addrRead, BYTE* pbRead, BYTE cbRead, WORD* pcbRead, UINT32 uWait);
 BOOL I2CHALWrite(int fdI2cDev, BYTE slaveAddr, WORD addrWrite, BYTE* pbWrite, BYTE cbWrite, INT32 cbDevRxMax, WORD* pcbWritten, INT32 uWait);
-#ifdef XPS_BOARD_GZU_3EG
+#if defined(XPS_BOARD_GZU_3EG) || defined(XPS_BOARD_GZU_5EV)
 WORD I2CHALLowLevelSend(int fdI2cDev, BYTE slaveAddr, BYTE* rgbSnd, WORD cbTrans);
 #endif
 
