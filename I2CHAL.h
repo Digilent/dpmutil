@@ -34,7 +34,7 @@
 /*            			HAL Declarations                   		*/
 /* ------------------------------------------------------------ */
 
-#ifdef PLATFORM_ZYNQ
+#ifdef XPAR_XIICPS_NUM_INSTANCES
 #include "xiicps.h"
 #define Iic_Config XIicPs_Config
 #define Iic_LookupConfig XIicPs_LookupConfig
